@@ -1,0 +1,34 @@
+
+apply plugin: 'distribution'
+
+dependencies {
+    implementation project(':common')
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: kafka_version
+}
+
+application {
+    mainClass = "io.kineticedge.ksd.${project.name}.Main"
+    //applicationDefaultJvmArgs = ['-javaagent:./jmx_prometheus/jmx_prometheus_javaagent.jar=7071:./docker/streams-config.yml']
+}
+
+task buildDockerImage(type: Exec) {
+    inputs.files 'Dockerfile'
+    commandLine 'docker', 'build', '-t', "ksd_${project.name}:latest", '.'
+
+    doFirst {
+        exec {
+            ignoreExitValue = true
+            commandLine 'docker', 'tag', "ksd_${project.name}:latest", "ksd_${project.name}:prev"
+        }
+    }
+
+    doLast {
+        exec {
+            ignoreExitValue = true
+            commandLine 'docker', 'rmi', "ksd_${project.name}:prev"
+        }
+    }
+}
+
+build.finalizedBy buildDockerImage
+
