@@ -1,7 +1,7 @@
 package io.kineticedge.ks101.streams;
 
 import com.beust.jcommander.Parameter;
-import io.kineticedge.ks101.tools.config.BaseOptions;
+import io.kineticedge.ks101.common.config.BaseOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,7 +24,5 @@ public class Options extends BaseOptions  {
 
     @Parameter(names = { "--auto-offset-reset" }, description = "where to start consuming from if no offset is provided")
     private String autoOffsetReset = "earliest";
-
-
 
 }

@@ -31,10 +31,10 @@ fi
 (cd cluster_zk; docker-compose up -d --wait)
 #(cd cluster; docker-compose up -d --wait)
 
-./gradlew build
+#./gradlew build
 
-(cd builder; ../gradlew run)
-(cd monitoring; docker-compose up -d)
-(cd applications; docker-compose up -d)
+#(cd builder; ../gradlew run)
+#(cd monitoring; docker-compose up -d)
+#(cd applications; docker-compose up -d)
 
-(cd publisher; ../gradlew run --args="--max-sku 100")
+#(cd publisher; ../gradlew run --args="--max-sku 100")

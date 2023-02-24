@@ -89,6 +89,6 @@ kafka-console-consumer \
    --property print.partition=true \
    --property print.key=true \
    --property key.separator=\| \
-   --key-deserializer=io.kineticedge.ks101.tools.serde.SessionDeserializer \
+   --key-deserializer=io.kineticedge.ks101.consumer.serde.SessionDeserializer \
    --topic analytics_session-SESSION-aggregate-purchase-order-changelog
 ```

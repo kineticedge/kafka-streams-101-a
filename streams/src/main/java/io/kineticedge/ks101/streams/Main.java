@@ -1,6 +1,6 @@
 package io.kineticedge.ks101.streams;
 
-import io.kineticedge.ks101.tools.config.OptionsUtil;
+import io.kineticedge.ks101.common.config.OptionsUtil;
 
 public class Main {
 
@@ -15,8 +15,6 @@ public class Main {
 		final Streams stream = new Streams();
 
 		stream.start(options);
-
 	}
-
 }
 

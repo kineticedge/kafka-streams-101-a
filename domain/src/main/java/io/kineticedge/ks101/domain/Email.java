@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "$type")
 public class Email {
     private String type;
     private String email;

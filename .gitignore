@@ -10,4 +10,3 @@ build
 .project
 /applications/stores/*
 
-/statestore-ui/node_modules

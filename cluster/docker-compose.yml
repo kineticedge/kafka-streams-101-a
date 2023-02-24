@@ -1,7 +1,7 @@
 networks:
   default:
     external: true
-    name: ksd
+    name: ks101
 
 volumes:
   ct0: {}
@@ -16,7 +16,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: controller-0
-    container_name: ksd-controller-0
+    container_name: ks101-controller-0
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9093 || exit 1
@@ -48,7 +48,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-1
-    container_name: ksd-broker-1
+    container_name: ks101-broker-1
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -90,7 +90,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-2
-    container_name: ksd-broker-2
+    container_name: ks101-broker-2
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -130,7 +130,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-3
-    container_name: ksd-broker-3
+    container_name: ks101-broker-3
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -170,7 +170,7 @@ services:
     platform: ${PLATFORM}
     image: confluentinc/cp-kafka:${VERSION}
     hostname: broker-4
-    container_name: ksd-broker-4
+    container_name: ks101-broker-4
     stop_grace_period: 120s
     healthcheck:
       test: nc -z localhost 9092 || exit 1
@@ -209,7 +209,7 @@ services:
 #  schema-registry:
 #    image: confluentinc/cp-schema-registry:${VERSION}
 #    hostname: schema-registry
-#    container_name: ksd-schema-registry
+#    container_name: ks101-schema-registry
 #    stop_grace_period: 120s
 #    healthcheck:
 #      test: curl --fail http://localhost:8081/ || exit 1
