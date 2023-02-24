@@ -7,13 +7,7 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
-    final static Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {
-
-        @Override
-        public void uncaughtException(Thread t, Throwable e) {
-            System.err.println("Uncaught exception in thread '" + t.getName() + "': " + e.getMessage());
-        }
-    };
+    final static Thread.UncaughtExceptionHandler exceptionHandler = (t, e) -> System.err.println("Uncaught exception in thread '" + t.getName() + "': " + e.getMessage());
 
     public static void main(String[] args) throws Exception {
 
@@ -23,23 +17,26 @@ public class Main {
             return;
         }
 
-        final Consumer consumer = new Consumer(options);
+        final UpdateConsumer updateConsumer = new UpdateConsumer(options);
+        final Customer360Consumer consumer = new Customer360Consumer(options);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("PROPER SHUTDOWN");
             consumer.close();
+            updateConsumer.close();
         }));
 
-
-        final ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
+        final ExecutorService executor = Executors.newFixedThreadPool(2, r -> {
             final Thread t = Executors.defaultThreadFactory().newThread(r);
-            //t.setDaemon(true);
             t.setUncaughtExceptionHandler(exceptionHandler);
             return t;
         });
 
         executor.submit(() -> {
             consumer.consume();
+        });
+
+        executor.submit(() -> {
+            updateConsumer.consume();
         });
     }
 

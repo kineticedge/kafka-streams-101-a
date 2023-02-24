@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class Consumer {
+public class Customer360Consumer {
 
     private final Options options;
 
@@ -28,7 +28,7 @@ public class Consumer {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    public Consumer(final Options options) {
+    public Customer360Consumer(final Options options) {
         this.options = options;
         this.kafkaConsumer = new KafkaConsumer<String, Customer360>(properties(options));
     }
