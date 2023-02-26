@@ -2,6 +2,7 @@
 alias d='docker'
 alias docker-compose='docker compose'
 alias dn='docker network'
+alias kt='kafka-topics --bootstrap-server localhost:19092'
 
 if ! [ -x "$(command -v docker)" ]; then
     echo "docker is not installed." >&2
@@ -27,6 +28,11 @@ fi
 #(cd cluster; docker-compose up -d --wait)
 
 ./gradlew build
+
+kt --create --replication-factor 3 --partitions 4 --topic names --if-not-exists
+kt --create --replication-factor 3 --partitions 4 --topic emails --if-not-exists
+kt --create --replication-factor 3 --partitions 4 --topic phones --if-not-exists
+kt --create --replication-factor 3 --partitions 4 --topic customers360 --if-not-exists
 
 (cd applications; docker-compose up -d)
 (cd monitoring; docker-compose up -d)

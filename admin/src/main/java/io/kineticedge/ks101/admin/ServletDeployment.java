@@ -1,6 +1,7 @@
 package io.kineticedge.ks101.admin;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,13 +16,14 @@ import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.util.Headers;
 import io.undertow.util.StatusCodes;
 
+import java.util.Map;
 import java.util.TimeZone;
 
 public class ServletDeployment {
 
     private static final int PORT = 8080;
 
-    private ObjectMapper objectMapper = new ObjectMapper()
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .setTimeZone(TimeZone.getDefault())
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -51,13 +53,10 @@ public class ServletDeployment {
 
         routingHandler
                 .add("GET", "/topics", new BlockingHandler(exchange -> {
-
-                            admin.topics();
-
+                            final Map<String, Map<String, Object>> result = admin.topics();
                             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
                             exchange.setStatusCode(StatusCodes.ACCEPTED);
-
-                            exchange.getResponseSender().send("xxx");
+                            exchange.getResponseSender().send(format(result));
                         })
                 );
 
@@ -68,5 +67,13 @@ public class ServletDeployment {
         server.start();
     }
 
+
+    private String format(final Map<String, Map<String, Object>> result) {
+        try {
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(result) + "\n";
+        } catch (final JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

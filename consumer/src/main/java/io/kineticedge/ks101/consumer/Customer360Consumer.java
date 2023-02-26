@@ -1,5 +1,13 @@
 package io.kineticedge.ks101.consumer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.kineticedge.ks101.common.InstantDeserializer;
+import io.kineticedge.ks101.common.InstantSerializer;
 import io.kineticedge.ks101.domain.Customer360;
 import io.kineticedge.ks101.consumer.serde.JsonDeserializer;
 import lombok.extern.slf4j.Slf4j;
@@ -10,15 +18,24 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class Customer360Consumer {
+
+    private static final ObjectMapper OBJECT_MAPPER =
+            new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .setTimeZone(TimeZone.getDefault())
+                    .registerModule(new JavaTimeModule())
+                    .registerModule(new SimpleModule("instant-module", new Version(1, 0, 0, null, "", ""))
+                            .addSerializer(Instant.class, new InstantSerializer())
+                            .addDeserializer(Instant.class, new InstantDeserializer())
+                    )
+            ;
 
     private final Options options;
 
@@ -47,11 +64,14 @@ public class Customer360Consumer {
         kafkaConsumer.subscribe(Collections.singleton(options.getCustomer360Topic()));
 
         while (run) {
-            ConsumerRecords<String, Customer360> records = kafkaConsumer.poll(options.getPollDuration());
+            final ConsumerRecords<String, Customer360> records = kafkaConsumer.poll(options.getPollDuration());
 
             records.forEach(record -> {
-                System.out.println(record.key());
-                System.out.println(record.value());
+                try {
+                    log.info(OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(record.value()));
+                } catch (final JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
 
