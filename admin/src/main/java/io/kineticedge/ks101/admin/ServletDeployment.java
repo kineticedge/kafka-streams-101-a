@@ -1,4 +1,4 @@
-package io.kineticedge.ks101.consumer;
+package io.kineticedge.ks101.admin;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -18,6 +18,8 @@ import io.undertow.util.StatusCodes;
 import java.util.TimeZone;
 
 public class ServletDeployment {
+
+    private static final int PORT = 8080;
 
     private ObjectMapper objectMapper = new ObjectMapper()
             .setTimeZone(TimeZone.getDefault())
@@ -40,7 +42,7 @@ public class ServletDeployment {
         DeploymentInfo servletBuilder = Servlets.deployment()
                 .setClassLoader(ServletDeployment.class.getClassLoader())
                 .setContextPath("/")
-                .setDeploymentName("streams");
+                .setDeploymentName("admin");
 
         DeploymentManager manager = Servlets.defaultContainer().addDeployment(servletBuilder);
         manager.deploy();
@@ -60,7 +62,7 @@ public class ServletDeployment {
                 );
 
         server = Undertow.builder()
-                .addHttpListener(9998, "0.0.0.0")
+                .addHttpListener(PORT, "0.0.0.0")
                 .setHandler(routingHandler)
                 .build();
         server.start();

@@ -1,4 +1,4 @@
-package io.kineticedge.ks101.consumer;
+package io.kineticedge.ks101.admin;
 
 
 import lombok.extern.slf4j.Slf4j;

@@ -33,6 +33,8 @@ import java.util.concurrent.Future;
 
 public class ServletDeployment {
 
+    private static final int PORT = 8080;
+
     private ObjectMapper objectMapper = new ObjectMapper()
             .setTimeZone(TimeZone.getDefault())
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -96,7 +98,7 @@ public class ServletDeployment {
         ;
 
         server = Undertow.builder()
-                .addHttpListener(8080, "0.0.0.0")
+                .addHttpListener(PORT, "0.0.0.0")
                 .setHandler(routingHandler)
                 .build();
         server.start();
