@@ -1,11 +1,6 @@
 package io.kineticedge.ks101.admin;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.RoutingHandler;
@@ -17,18 +12,19 @@ import io.undertow.util.Headers;
 import io.undertow.util.StatusCodes;
 
 import java.util.Map;
-import java.util.TimeZone;
+
+import static io.kineticedge.ks101.common.util.JsonUtil.objectMapper;
 
 public class ServletDeployment {
 
     private static final int PORT = 8080;
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .setTimeZone(TimeZone.getDefault())
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .registerModule(new JavaTimeModule());
+//    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+//            .setTimeZone(TimeZone.getDefault())
+//            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+//            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+//            .registerModule(new JavaTimeModule());
 
     private Undertow server;
 
@@ -70,7 +66,7 @@ public class ServletDeployment {
 
     private String format(final Map<String, Map<String, Object>> result) {
         try {
-            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(result) + "\n";
+            return objectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(result) + "\n";
         } catch (final JsonProcessingException e) {
             throw new RuntimeException(e);
         }

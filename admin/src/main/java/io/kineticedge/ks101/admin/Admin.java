@@ -1,36 +1,19 @@
 package io.kineticedge.ks101.admin;
 
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.kineticedge.ks101.common.InstantDeserializer;
-import io.kineticedge.ks101.common.InstantSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
-import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.Config;
+import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.config.ConfigResource;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Admin {
-
-    private static final ObjectMapper OBJECT_MAPPER =
-            new ObjectMapper()
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                    .setTimeZone(TimeZone.getDefault())
-                    .registerModule(new JavaTimeModule())
-                    .registerModule(new SimpleModule("instant-module", new Version(1, 0, 0, null, "", ""))
-                            .addSerializer(Instant.class, new InstantSerializer())
-                            .addDeserializer(Instant.class, new InstantDeserializer())
-                    )
-            ;
 
     final AdminClient kafkaAdmin;
 
