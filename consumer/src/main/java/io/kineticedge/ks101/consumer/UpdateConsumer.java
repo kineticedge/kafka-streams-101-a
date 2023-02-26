@@ -42,7 +42,7 @@ public class UpdateConsumer {
 
     public void consume() {
 
-        kafkaConsumer.subscribe(Arrays.asList(options.getEmailTopic(), options.getPhoneTopic(), options.getCustomerTopic()));
+        kafkaConsumer.subscribe(Arrays.asList(options.getEmailTopic(), options.getPhoneTopic(), options.getNamesTopics()));
 
         while (run) {
             ConsumerRecords<String, CustomerEvent> records = kafkaConsumer.poll(options.getPollDuration());

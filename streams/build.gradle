@@ -8,6 +8,6 @@ dependencies {
 }
 
 application {
-    mainClass = "io.kineticedge.ksd.${project.name}.Main"
+    mainClass = "io.kineticedge.ks101.${project.name}.Main"
     //applicationDefaultJvmArgs = ['-javaagent:./jmx_prometheus/jmx_prometheus_javaagent.jar=7071:./docker/streams-config.yml']
 }

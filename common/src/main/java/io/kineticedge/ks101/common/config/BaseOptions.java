@@ -14,8 +14,8 @@ public abstract class BaseOptions {
     @Parameter(names = { "-b", "--bootstrap-servers" }, description = "cluster bootstrap servers")
     private String bootstrapServers = "localhost:19092,localhost:29092,localhost:39092";
 
-    @Parameter(names = { "--customer-topic" }, description = "customer topic")
-    private String customerTopic = "customers";
+    @Parameter(names = { "--names-topic" }, description = "names topic")
+    private String namesTopics = "names";
 
     @Parameter(names = { "--email-topic" }, description = "email topic")
     private String emailTopic = "emails";

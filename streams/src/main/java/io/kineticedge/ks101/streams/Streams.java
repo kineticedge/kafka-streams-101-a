@@ -146,11 +146,11 @@ public class Streams {
 
         final var materialized = Materialized.<String, Customer360, KeyValueStore<Bytes, byte[]>>as("customer360");
 
-        final KStream<String, CustomerEvent> customer = builder.<String, CustomerEvent>stream(options.getCustomerTopic(), Consumed.as("customer-input"));
+        final KStream<String, CustomerEvent> name = builder.<String, CustomerEvent>stream(options.getNamesTopics(), Consumed.as("name-input"));
         final KStream<String, CustomerEvent> email = builder.<String, CustomerEvent>stream(options.getEmailTopic(), Consumed.as("email-input"));
         final KStream<String, CustomerEvent> phone = builder.<String, CustomerEvent>stream(options.getPhoneTopic(), Consumed.as("phone-input"));
 
-        customer
+        name
                 .merge(email, Named.as("merge-email"))
                 .merge(phone, Named.as("merge-phone"))
                 .peek((k, v) -> log.debug("key={}, value={}", k, v), Named.as("peek-in"))

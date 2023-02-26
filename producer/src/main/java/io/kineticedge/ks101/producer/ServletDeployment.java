@@ -51,14 +51,14 @@ public class ServletDeployment {
 
     private Undertow server;
 
-    private String customerTopic;
+    private String namesTopic;
     private String emailTopic;
     private String phoneTopic;
 
     public ServletDeployment(final Options options) {
         producer = new Producer(options);
 
-        customerTopic = options.getCustomerTopic();
+        namesTopic = options.getNamesTopics();
         emailTopic = options.getEmailTopic();
         phoneTopic = options.getPhoneTopic();
     }
@@ -75,13 +75,8 @@ public class ServletDeployment {
         RoutingHandler routingHandler = Handlers.routing();
 
         routingHandler
-                .add("POST", "/customer", new BlockingHandler(exchange -> {
-                            final Future<RecordMetadata> future = producer.publish(customerTopic, create(exchange, CustomerUpdated.class));
-                            createResponse(exchange, future);
-                        })
-                )
                 .add("POST", "/name", new BlockingHandler(exchange -> {
-                            final Future<RecordMetadata> future = producer.publish(customerTopic, create(exchange, NameUpdated.class));
+                            final Future<RecordMetadata> future = producer.publish(namesTopic, create(exchange, NameUpdated.class));
                             createResponse(exchange, future);
                         })
                 )
