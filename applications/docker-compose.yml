@@ -42,7 +42,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: ks101a-nginx
-    hostname: ks101a-nginx
+    hostname: nginx
     stop_grace_period: 30s
     healthcheck:
       test: curl -s http://localhost:80 || exit 1
