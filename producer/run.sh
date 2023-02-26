@@ -6,6 +6,6 @@ gradle assemble > /dev/null
 
 . ./.classpath.sh
 
-MAIN="io.kineticedge.ks101.publisher.Main"
+MAIN="io.kineticedge.ks101.producer.Main"
 
 java -cp "${CP}" $MAIN "$@"

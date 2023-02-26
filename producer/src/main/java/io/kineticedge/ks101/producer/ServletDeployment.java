@@ -1,4 +1,4 @@
-package io.kineticedge.ks101.consumer;
+package io.kineticedge.ks101.producer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -96,7 +96,7 @@ public class ServletDeployment {
         ;
 
         server = Undertow.builder()
-                .addHttpListener(9999, "0.0.0.0")
+                .addHttpListener(8080, "0.0.0.0")
                 .setHandler(routingHandler)
                 .build();
         server.start();

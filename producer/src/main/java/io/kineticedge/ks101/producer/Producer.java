@@ -1,4 +1,4 @@
-package io.kineticedge.ks101.consumer;
+package io.kineticedge.ks101.producer;
 
 import io.kineticedge.ks101.event.CustomerEvent;
 import io.kineticedge.ks101.consumer.serde.JsonSerializer;

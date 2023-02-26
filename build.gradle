@@ -77,6 +77,7 @@ configure(subprojects.findAll { project -> file("${project.name}/src/main/java")
 
 configure(subprojects.findAll { project -> file("${project.name}/run.sh").exists() }) {
 
+
     // creates a shell file that can set the java class-path for integration tests.
     ext.createIntegrationClasspath = { scriptName ->
         def cp = sourceSets.main.runtimeClasspath.collect { "export CP=\"\${CP}:${it}\"" }.join("\n")
