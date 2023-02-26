@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo "XXX"
-echo "$@"
-echo "XXX"
-
 set -e
 
 #
@@ -21,7 +17,6 @@ export CLIENT_ID=${CLIENT_ID_PREFIX:-}-${INSTANCE_ID}
 
 cd /app
 tar xfv /app.tar
-
 
 PROJECT="$(ls -A)"
 APPLICATION=$(echo "$PROJECT" | sed -E -e 's/(.*)-(.*)/\1/')
